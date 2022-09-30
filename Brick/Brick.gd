@@ -52,6 +52,8 @@ func _ready():
 	else:
 		color_index = 7
 	$ColorRect.color = colors[color_index]
+	sway_initial_position = $ColorRect.rect_position
+	sway_randomizer = Vector2(randf() * 6 - 3, randf() * 6 - 3)
 
 func _physics_process(_delta):
 	if dying and not $Confetti.emitting and not $Tween.is_active():
@@ -64,6 +66,9 @@ func _physics_process(_delta):
 		elif not color_completed:
 			$ColorRect.color = colors[color_index]
 			color_completed = true
+	var pos_x = (sin(Global.sway_index) * (sway_amplitude + sway_randomizer.x))
+	var pos_y = (cos(Global.sway_index) * (sway_amplitude + sway_randomizer.y))
+	$ColorRect.rect_position = Vector2(sway_initial_position.x + pos_x, sway_initial_position.y + pos_y)
 
 func hit(_ball):
 	var brick_sound = get_node_or_null("/root/Game/Brick_Sound")
